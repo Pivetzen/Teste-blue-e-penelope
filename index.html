@@ -3,179 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Ebook Interativo com Progresso</title>
-    
+    <title>Ebook Dinâmico via Google Sheets</title>
     <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
-
     <style>
-        /* --- ESTILIZAÇÃO GERAL --- */
-        body {
-            background-color: #1e1e1e;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            font-family: 'Georgia', serif;
-            overflow: hidden;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 900px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        /* --- BARRA DE PROGRESSO --- */
-        #progress-container {
-            width: 80%;
-            max-width: 600px;
-            height: 8px;
-            background-color: #444;
-            border-radius: 4px;
-            margin-top: 30px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        #progress-bar {
-            width: 0%; /* Começa em 0 */
-            height: 100%;
-            background: linear-gradient(90deg, #3498db, #2ecc71);
-            transition: width 0.3s ease;
-        }
-
-        #page-counter {
-            color: #ccc;
-            margin-top: 10px;
-            font-size: 0.9em;
-            font-family: sans-serif;
-        }
-
-        /* --- ESTILO DO LIVRO --- */
-        .page {
-            padding: 40px;
-            background-color: #fdfdfd;
-            color: #333;
-            border: 1px solid #ddd;
-            display: flex;
-            flex-direction: column;
-            box-sizing: border-box;
-        }
-
-        .page-cover {
-            background-color: #2c3e50;
-            color: #ecf0f1;
-            text-align: center;
-            justify-content: center;
-        }
-
-        .page-content {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-
-        .page-image {
-            width: 100%;
-            height: 220px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-            object-fit: cover;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-
-        .text-container {
-            line-height: 1.7;
-            text-align: justify;
-            font-size: 1.05em;
-        }
-
-        h1, h2, h3 { margin-top: 0; color: #2c3e50; }
-        .page-cover h1 { color: white; }
+        body { background-color: #1e1e1e; margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; font-family: 'Georgia', serif; }
+        .container { width: 100%; max-width: 900px; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        #book { opacity: 0; transition: opacity 0.5s; } /* Esconde o livro até carregar os dados */
+        .page { padding: 40px; background-color: #fdfdfd; border: 1px solid #ddd; display: flex; flex-direction: column; box-sizing: border-box; }
+        .page-cover { background-color: #2c3e50; color: #ecf0f1; text-align: center; justify-content: center; }
+        .page-image { width: 100%; height: 220px; margin-bottom: 20px; border-radius: 4px; object-fit: cover; }
+        .text-container { line-height: 1.7; text-align: justify; font-size: 1.05em; }
+        #progress-container { width: 80%; max-width: 600px; height: 8px; background-color: #444; border-radius: 4px; margin-top: 30px; }
+        #progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, #3498db, #2ecc71); transition: width 0.3s; }
+        #page-counter { color: #ccc; margin-top: 10px; font-size: 0.9em; }
     </style>
 </head>
 <body>
 
     <div class="container">
         <div class="flip-book" id="book">
-            
-            <div class="page page-cover" data-density="hard">
-                <div class="page-content">
-                    <h1>Título do Ebook</h1>
-                    <p>Subtítulo ou Autor</p>
-                </div>
             </div>
-
-            <div class="page">
-                <div class="page-content">
-                    <img src="https://via.placeholder.com/400x250" class="page-image" alt="Foto 1">
-                    <div class="text-container">
-                        <h3>Capítulo I</h3>
-                        <p>Este é o início da sua jornada. Aqui você pode inserir textos longos e formatados. A barra abaixo indicará o seu progresso conforme você vira as páginas.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="page">
-                <div class="page-content">
-                    <div class="text-container">
-                        <p>Página de continuação. Você pode alternar a posição das imagens ou focar apenas no texto para uma leitura mais densa.</p>
-                    </div>
-                    <img src="https://via.placeholder.com/400x250" class="page-image" style="margin-top:20px;">
-                </div>
-            </div>
-
-            <div class="page">
-                <div class="page-content">
-                    <div class="text-container">
-                        <h3>Capítulo II</h3>
-                        <p>O GitHub Pages servirá este arquivo de forma estática, garantindo rapidez no carregamento, mesmo com muitas imagens.</p>
-                    </div>
-                    <img src="https://via.placeholder.com/400x250" class="page-image" style="margin-top:20px;">
-                </div>
-            </div>
-
-            <div class="page page-cover" data-density="hard">
-                <div class="page-content">
-                    <h2>FIM</h2>
-                    <p>Obrigado pela leitura!</p>
-                </div>
-            </div>
-
-        </div>
     </div>
 
-    <div id="progress-container">
-        <div id="progress-bar"></div>
-    </div>
-    <div id="page-counter">Página <span id="current-page">1</span> de <span id="total-pages">-</span></div>
+    <div id="progress-container"><div id="progress-bar"></div></div>
+    <div id="page-counter">Carregando conteúdo...</div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const bookElement = document.getElementById('book');
-            const progressBar = document.getElementById('progress-bar');
-            const currentPageSpan = document.getElementById('current-page');
-            const totalPagesSpan = document.getElementById('total-pages');
+        // COLE O LINK DO SEU CSV PUBLICADO AQUI ABAIXO:
+        const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSm0NV0OTbTbEz5xamgqRZzpkFBmDJNVFfl8UIQZYjCu6SOCZvGdAsobKFQZ2aVKEkZcd2jONOwtsX8/pub?output=csv";
 
-            const pageFlip = new St.PageFlip(bookElement, {
-                width: 450,
-                height: 600,
-                size: "stretch",
-                minWidth: 315,
-                maxWidth: 1000,
-                minHeight: 420,
-                maxHeight: 1350,
-                showCover: true
+        async function loadBook() {
+            const response = await fetch(sheetURL);
+            const data = await response.text();
+            const rows = data.split('\n').slice(1); // Remove o cabeçalho
+            const bookContainer = document.getElementById('book');
+
+            // 1. Criar Capa
+            bookContainer.innerHTML += `<div class="page page-cover" data-density="hard"><h1>Meu Ebook</h1><p>Carregado via Sheets</p></div>`;
+
+            // 2. Criar Páginas Dinâmicas
+            rows.forEach(row => {
+                const columns = row.split(','); // Divide por vírgula
+                if(columns.length >= 3) {
+                    const [titulo, texto, imagem] = columns;
+                    bookContainer.innerHTML += `
+                        <div class="page">
+                            <div class="page-content">
+                                ${imagem.trim() ? `<img src="${imagem}" class="page-image">` : ''}
+                                <div class="text-container">
+                                    <h3>${titulo}</h3>
+                                    <p>${texto}</p>
+                                </div>
+                            </div>
+                        </div>`;
+                }
             });
 
-            // Carrega as páginas
-            pageFlip.loadFromHTML(document.querySelectorAll('.page'));
+            // 3. Criar Contracapa
+            bookContainer.innerHTML += `<div class="page page-cover" data-density="hard"><h2>FIM</h2></div>`;
 
-            // Atualiza o contador total inicialmente
-            totalPages
+            initFlip(bookContainer);
+        }
+
+        function initFlip(el) {
+            const pageFlip = new St.PageFlip(el, {
+                width: 450, height: 600, size: "stretch", showCover: true
+            });
+            pageFlip.loadFromHTML(document.querySelectorAll('.page'));
+            el.style.opacity = "1";
+            
+            const total = pageFlip.getPageCount();
+            document.getElementById('total-pages');
+
+            pageFlip.on('flip', (e) => {
+                const current = e.data + 1;
+                document.getElementById('page-counter').innerText = `Página ${current} de ${total}`;
+                document.getElementById('progress-bar').style.width = (current / total * 100) + "%";
+            });
+        }
+
+        loadBook();
+    </script>
+</body>
+</html>
