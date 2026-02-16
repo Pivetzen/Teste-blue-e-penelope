@@ -3,55 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Ebook Interativo</title>
+    <title>Meu Ebook Interativo com Progresso</title>
     
     <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
 
     <style>
-        /* --- ESTILIZAÇÃO DO LIVRO --- */
+        /* --- ESTILIZAÇÃO GERAL --- */
         body {
-            background-color: #2c3e50;
+            background-color: #1e1e1e;
             margin: 0;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             font-family: 'Georgia', serif;
+            overflow: hidden;
         }
 
         .container {
             width: 100%;
-            max-width: 1000px;
+            max-width: 900px;
             display: flex;
             justify-content: center;
+            align-items: center;
+            padding: 20px;
         }
 
-        .flip-book {
-            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        /* --- BARRA DE PROGRESSO --- */
+        #progress-container {
+            width: 80%;
+            max-width: 600px;
+            height: 8px;
+            background-color: #444;
+            border-radius: 4px;
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
         }
 
+        #progress-bar {
+            width: 0%; /* Começa em 0 */
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            transition: width 0.3s ease;
+        }
+
+        #page-counter {
+            color: #ccc;
+            margin-top: 10px;
+            font-size: 0.9em;
+            font-family: sans-serif;
+        }
+
+        /* --- ESTILO DO LIVRO --- */
         .page {
             padding: 40px;
             background-color: #fdfdfd;
             color: #333;
             border: 1px solid #ddd;
-            overflow: hidden;
             display: flex;
             flex-direction: column;
+            box-sizing: border-box;
         }
 
-        /* Capas (Primeira e Última Página) */
         .page-cover {
-            background-color: #1a252f;
+            background-color: #2c3e50;
             color: #ecf0f1;
             text-align: center;
             justify-content: center;
         }
 
-        .page-cover h1 { font-size: 2.5em; margin-bottom: 10px; }
-        .page-cover p { font-style: italic; opacity: 0.8; }
-
-        /* Conteúdo das Páginas */
         .page-content {
             height: 100%;
             display: flex;
@@ -59,33 +81,23 @@
             position: relative;
         }
 
-        .text-container {
-            line-height: 1.8;
-            text-align: justify;
-            font-size: 1.1em;
-        }
-
         .page-image {
             width: 100%;
-            height: 200px; /* Ajuste conforme necessário */
+            height: 220px;
             margin-bottom: 20px;
-            border-radius: 5px;
+            border-radius: 4px;
             object-fit: cover;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
-        .page-footer {
-            position: absolute;
-            bottom: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.8em;
-            color: #999;
+        .text-container {
+            line-height: 1.7;
+            text-align: justify;
+            font-size: 1.05em;
         }
 
-        /* Estilo para a animação de virada (sombra interna) */
-        .page.-left { border-right: 0; box-shadow: inset -7px 0 30px -7px rgba(0,0,0,0.2); }
-        .page.-right { border-left: 0; box-shadow: inset 7px 0 30px -7px rgba(0,0,0,0.2); }
+        h1, h2, h3 { margin-top: 0; color: #2c3e50; }
+        .page-cover h1 { color: white; }
     </style>
 </head>
 <body>
@@ -95,36 +107,43 @@
             
             <div class="page page-cover" data-density="hard">
                 <div class="page-content">
-                    <h1>O Título do Livro</h1>
-                    <p>Por Seu Nome</p>
+                    <h1>Título do Ebook</h1>
+                    <p>Subtítulo ou Autor</p>
                 </div>
             </div>
 
             <div class="page">
                 <div class="page-content">
-                    <img src="https://via.placeholder.com/400x250" class="page-image" alt="Imagem 1">
+                    <img src="https://via.placeholder.com/400x250" class="page-image" alt="Foto 1">
                     <div class="text-container">
-                        <h3>Capítulo 1</h3>
-                        <p>Aqui começa o seu texto. O GitHub Pages lerá este arquivo e criará a animação de virada automaticamente. Você pode incluir quantos parágrafos desejar dentro desta div.</p>
+                        <h3>Capítulo I</h3>
+                        <p>Este é o início da sua jornada. Aqui você pode inserir textos longos e formatados. A barra abaixo indicará o seu progresso conforme você vira as páginas.</p>
                     </div>
-                    <div class="page-footer">Pág. 1</div>
                 </div>
             </div>
 
             <div class="page">
                 <div class="page-content">
                     <div class="text-container">
-                        <p>Esta é a continuação do seu conteúdo. Note que a estrutura é simples: cada bloco de "page" é uma nova página no seu livro.</p>
-                        <p>Para adicionar mais páginas, basta copiar o bloco <strong>div class="page"</strong> e colar antes da última página (contracapa).</p>
+                        <p>Página de continuação. Você pode alternar a posição das imagens ou focar apenas no texto para uma leitura mais densa.</p>
                     </div>
                     <img src="https://via.placeholder.com/400x250" class="page-image" style="margin-top:20px;">
-                    <div class="page-footer">Pág. 2</div>
+                </div>
+            </div>
+
+            <div class="page">
+                <div class="page-content">
+                    <div class="text-container">
+                        <h3>Capítulo II</h3>
+                        <p>O GitHub Pages servirá este arquivo de forma estática, garantindo rapidez no carregamento, mesmo com muitas imagens.</p>
+                    </div>
+                    <img src="https://via.placeholder.com/400x250" class="page-image" style="margin-top:20px;">
                 </div>
             </div>
 
             <div class="page page-cover" data-density="hard">
                 <div class="page-content">
-                    <h2>Fim</h2>
+                    <h2>FIM</h2>
                     <p>Obrigado pela leitura!</p>
                 </div>
             </div>
@@ -132,30 +151,31 @@
         </div>
     </div>
 
+    <div id="progress-container">
+        <div id="progress-bar"></div>
+    </div>
+    <div id="page-counter">Página <span id="current-page">1</span> de <span id="total-pages">-</span></div>
+
     <script>
-        // Configuração do motor de virada de página
         document.addEventListener('DOMContentLoaded', function() {
-            const pageFlip = new St.PageFlip(document.getElementById('book'), {
-                width: 450, // largura de cada página
-                height: 600, // altura de cada página
+            const bookElement = document.getElementById('book');
+            const progressBar = document.getElementById('progress-bar');
+            const currentPageSpan = document.getElementById('current-page');
+            const totalPagesSpan = document.getElementById('total-pages');
+
+            const pageFlip = new St.PageFlip(bookElement, {
+                width: 450,
+                height: 600,
                 size: "stretch",
                 minWidth: 315,
                 maxWidth: 1000,
                 minHeight: 420,
                 maxHeight: 1350,
-                maxShadowOpacity: 0.5,
-                showCover: true,
-                mobileScrollSupport: false
+                showCover: true
             });
 
-            // Carrega as páginas do HTML
+            // Carrega as páginas
             pageFlip.loadFromHTML(document.querySelectorAll('.page'));
-        });
-    </script>
 
-</body>
-</html>
-    <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
-    <script src="script.js"></script>
-</body>
-</html>
+            // Atualiza o contador total inicialmente
+            totalPages
