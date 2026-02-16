@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Ebook Estilizado</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <div class="flip-book" id="book">
+            <div class="page page-cover">
+                <h2>Título do Livro</h2>
+                <p>Nome do Autor</p>
+            </div>
+
+            <div class="page">
+                <div class="page-content">
+                    <h3>Capítulo 1</h3>
+                    <p>Cole seu texto aqui...</p>
+                </div>
+            </div>
+
+            <div class="page">
+                <div class="page-content">
+                    <p>Continuação do texto na segunda página...</p>
+                </div>
+            </div>
+
+            <div class="page page-cover">
+                <p>Fim</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
