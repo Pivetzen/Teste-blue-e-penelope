@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ebook Dinâmico - Layout Compacto</title>
+    <title>Ebook Dinâmico - Alinhamento Corrigido</title>
     
     <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
 
@@ -30,7 +30,7 @@
         #book { opacity: 0; transition: opacity 0.8s ease; }
 
         .page { 
-            padding: 20px; /* Padding reduzido */
+            padding: 30px; 
             background-color: #fdfdfd; 
             border: 1px solid #ddd; 
             box-sizing: border-box; 
@@ -49,34 +49,37 @@
         .page-image { 
             width: 100%; 
             max-height: 280px; 
-            margin-bottom: 8px; /* Espaço mínimo entre imagem e texto */
+            margin-bottom: 15px; 
             border-radius: 4px; 
             object-fit: cover; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-        /* REMOVENDO ESPAÇAMENTO INICIAL */
+        /* AJUSTE DE ALINHAMENTO DO TEXTO */
         .text-container { 
-            line-height: 1.6; 
+            line-height: 1.7; 
             text-align: justify; 
-            font-size: 1.05em; 
+            font-size: 1.1em; 
             color: #333;
             white-space: pre-wrap;
-            margin: 0; /* Remove margens externas do container */
+            margin: 0;
+            text-indent: 0 !important; /* Remove qualquer recuo de parágrafo inicial */
+            display: block;
         }
 
-        /* Remove margem superior do primeiro parágrafo ou título da página */
-        .text-container h3:first-child,
-        .text-container p:first-child,
-        .text-container:first-child {
+        /* Garante que o texto dentro do container ignore recuos */
+        .text-container p, .text-container span, .text-container div {
+            text-indent: 0 !important;
             margin-top: 0 !important;
-            padding-top: 0 !important;
+            padding-left: 0 !important;
+            text-align: left; /* Ou justify, se preferir o bloco reto dos dois lados */
         }
 
         h3 {
-            margin: 0 0 8px 0; 
-            font-size: 1.2em;
+            margin: 0 0 10px 0; 
+            font-size: 1.3em;
             color: #2c3e50;
+            text-indent: 0;
         }
 
         /* UI de Progresso */
@@ -100,17 +103,15 @@
 <body>
 
     <div class="container">
-        <div id="book" class="flip-book">
-            </div>
+        <div id="book" class="flip-book"></div>
     </div>
 
     <div id="ui-layer">
         <div id="progress-container"><div id="progress-bar"></div></div>
-        <div id="page-counter">Carregando conteúdo...</div>
+        <div id="page-counter">Sincronizando com Google Sheets...</div>
     </div>
 
     <script>
-        // SUBSTITUA PELO SEU URL DO APPS SCRIPT
         const jsonAppURL = "https://script.google.com/macros/s/AKfycbybe5Y0hFvUFVWoQFEIOWQkzqJN8dyo0CnECrJI7ICiMrEBY0Nc3X3LHknTCZcPsMB8/exec";
 
         async function initBook() {
@@ -119,16 +120,14 @@
                 const data = await response.json();
                 const bookEl = document.getElementById('book');
 
-                // Capa Inicial
                 bookEl.innerHTML += `
                     <div class="page page-cover" data-density="hard">
-                        <h1>Meu Livro Digital</h1>
-                        <p>Alimentado via Google Sheets</p>
+                        <h1>Minha História</h1>
+                        <p>Resgate e Carinho</p>
                     </div>`;
 
-                // Páginas Dinâmicas
                 data.forEach((item) => {
-                    // Limpando espaços em branco extras do texto da planilha
+                    // O .trim() é vital aqui para remover espaços em branco invisíveis da planilha
                     const cleanText = item.texto ? item.texto.trim() : '';
                     const cleanTitle = item.titulo ? item.titulo.trim() : '';
 
@@ -136,20 +135,16 @@
                         <div class="page">
                             <div class="page-content">
                                 ${item.imagem ? `<img src="${item.imagem}" class="page-image">` : ''}
-                                <div class="text-container">
-                                    ${cleanTitle ? `<h3>${cleanTitle}</h3>` : ''}
-                                    ${cleanText}
-                                </div>
+                                <div class="text-container">${cleanTitle ? `<h3>${cleanTitle}</h3>` : ''}${cleanText}</div>
                             </div>
                         </div>`;
                 });
 
-                // Contracapa
                 bookEl.innerHTML += `<div class="page page-cover" data-density="hard"><h2>FIM</h2></div>`;
 
                 startFlipEngine();
             } catch (error) {
-                document.getElementById('page-counter').innerText = "Erro ao carregar dados.";
+                document.getElementById('page-counter').innerText = "Erro ao carregar os dados.";
                 console.error(error);
             }
         }
