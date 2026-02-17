@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ebook Profissional Dinâmico</title>
+    <title>Ebook Dinâmico Ajustado</title>
     
     <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
 
@@ -29,36 +29,43 @@
         #book { opacity: 0; transition: opacity 0.8s ease; }
 
         .page { 
-            padding: 40px; 
+            padding: 25px; /* Reduzi o padding geral */
             background-color: #fdfdfd; 
             border: 1px solid #ddd; 
             box-sizing: border-box; 
             display: flex;
             flex-direction: column;
+            justify-content: flex-start; /* Força o conteúdo para o topo */
         }
 
         .page-cover { 
             background-color: #2c3e50; 
             color: #ecf0f1; 
             text-align: center; 
-            justify-content: center; 
+            justify-content: center; /* Capa permanece centralizada */
         }
 
         .page-image { 
             width: 100%; 
-            max-height: 250px; 
-            margin-bottom: 20px; 
+            max-height: 280px; /* Aumentei um pouco a imagem */
+            margin-bottom: 10px; /* Reduzi drasticamente o espaço abaixo da imagem */
             border-radius: 4px; 
             object-fit: cover; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
         .text-container { 
-            line-height: 1.8; 
+            line-height: 1.6; 
             text-align: justify; 
-            font-size: 1.1em; 
+            font-size: 1.05em; 
             color: #333;
-            white-space: pre-wrap; /* Mantém as quebras de linha da planilha */
+            white-space: pre-wrap;
+            margin-top: 0; /* Garante que não haja margem superior no texto */
+        }
+
+        h3 {
+            margin: 0 0 10px 0; /* Margem pequena abaixo do título */
+            font-size: 1.2em;
         }
 
         /* UI de Progresso */
@@ -88,11 +95,11 @@
 
     <div id="ui-layer">
         <div id="progress-container"><div id="progress-bar"></div></div>
-        <div id="page-counter">Conectando à biblioteca...</div>
+        <div id="page-counter">Carregando livro...</div>
     </div>
 
     <script>
-        // SUBSTITUA PELO URL QUE VOCÊ GEROU NO APPS SCRIPT
+        // SUBSTITUA PELO SEU URL DO APPS SCRIPT
         const jsonAppURL = "https://script.google.com/macros/s/AKfycbybe5Y0hFvUFVWoQFEIOWQkzqJN8dyo0CnECrJI7ICiMrEBY0Nc3X3LHknTCZcPsMB8/exec";
 
         async function initBook() {
@@ -101,28 +108,25 @@
                 const data = await response.json();
                 const bookEl = document.getElementById('book');
 
-                // 1. Capa (Pode ser fixa ou vir da primeira linha da planilha)
                 bookEl.innerHTML += `
                     <div class="page page-cover" data-density="hard">
                         <h1>Meu Livro Digital</h1>
                         <p>Alimentado via Google Sheets</p>
                     </div>`;
 
-                // 2. Páginas Dinâmicas (Lê cada linha da planilha)
-                data.forEach((item, index) => {
+                data.forEach((item) => {
                     bookEl.innerHTML += `
                         <div class="page">
                             <div class="page-content">
                                 ${item.imagem ? `<img src="${item.imagem}" class="page-image">` : ''}
                                 <div class="text-container">
-                                    <h3>${item.titulo || ''}</h3>
-                                    <p>${item.texto || ''}</p>
+                                    ${item.titulo ? `<h3>${item.titulo}</h3>` : ''}
+                                    ${item.texto || ''}
                                 </div>
                             </div>
                         </div>`;
                 });
 
-                // 3. Contracapa
                 bookEl.innerHTML += `<div class="page page-cover" data-density="hard"><h2>FIM</h2></div>`;
 
                 startFlipEngine();
